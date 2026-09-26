@@ -1,0 +1,89 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Books";
+    var result = Model.Result;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Books</h1>
+    <a class="btn btn-primary" asp-page="/Books/Create">Add book</a>
+</div>
+
+<form method="get" class="card card-body mb-3" role="search">
+    <div class="input-group mb-2">
+        <input class="form-control" type="search" name="@IndexModel.QUERY_PARAMETER" value="@Model.Query"
+               placeholder="Search by title, author or table of contents" aria-label="Search text" />
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        @if (!string.IsNullOrWhiteSpace(Model.Query))
+        {
+            <a class="btn btn-outline-secondary" asp-page="/Index">Reset</a>
+        }
+    </div>
+    <div>
+        <span class="me-2 text-muted">Search in:</span>
+        @foreach (var (scope, label) in IndexModel.SearchScopes)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="scope-@scope" name="@IndexModel.SCOPE_PARAMETER" value="@scope"
+                       checked="@Model.IsSearchedIn(scope)" />
+                <label class="form-check-label" for="scope-@scope">@label</label>
+            </div>
+        }
+    </div>
+</form>
+
+@if (result.Items.Count == 0)
+{
+    <div class="alert alert-info">
+        @(string.IsNullOrWhiteSpace(Model.Query) ? "The library is empty. Add the first book." : "No books match the search.")
+    </div>
+}
+else
+{
+    <p class="text-muted">Found: @result.TotalCount</p>
+
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th class="text-end">Year</th>
+                <th>Genre</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in result.Items)
+            {
+                <tr>
+                    <td><a asp-page="/Books/Details" asp-route-id="@book.Id">@book.Title</a></td>
+                    <td>@book.Author</td>
+                    <td class="text-end">@book.PublicationYear</td>
+                    <td>@book.Genre</td>
+                    <td class="text-end text-nowrap">
+                        <a class="btn btn-sm btn-outline-secondary" asp-page="/Books/Edit" asp-route-id="@book.Id">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-page="/Books/Delete" asp-route-id="@book.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (result.TotalPages > 1)
+    {
+        <nav aria-label="Pages">
+            <ul class="pagination">
+                <li class="page-item @(result.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" href="@Model.PageUrl(result.Page - 1)">Previous</a>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Page @result.Page of @result.TotalPages</span>
+                </li>
+                <li class="page-item @(result.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" href="@Model.PageUrl(result.Page + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}

@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HomeLibrary.Application/HomeLibrary.Application.csproj" />
+    <Project Path="src/HomeLibrary.Domain/HomeLibrary.Domain.csproj" />
+    <Project Path="src/HomeLibrary.Infrastructure/HomeLibrary.Infrastructure.csproj" />
+    <Project Path="src/HomeLibrary.Web/HomeLibrary.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HomeLibrary.Application.Tests/HomeLibrary.Application.Tests.csproj" />
+    <Project Path="tests/HomeLibrary.Domain.Tests/HomeLibrary.Domain.Tests.csproj" />
+    <Project Path="tests/HomeLibrary.Infrastructure.Tests/HomeLibrary.Infrastructure.Tests.csproj" />
+    <Project Path="tests/HomeLibrary.Web.Tests/HomeLibrary.Web.Tests.csproj" />
+  </Folder>
+</Solution>

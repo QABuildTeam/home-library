@@ -1,0 +1,23 @@
+## .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+TestResults/
+*.trx
+coverage*.xml
+
+## IDE
+.vs/
+.vscode/
+.idea/
+
+## Local settings and secrets
+appsettings.Local.json
+*.env
+.env.*
+
+## Logs
+*.log

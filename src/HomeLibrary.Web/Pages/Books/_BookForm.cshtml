@@ -1,0 +1,56 @@
+@model HomeLibrary.Web.Models.BookForm
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" autofocus />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Author" class="form-label"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-2">
+        <label asp-for="PublicationYear" class="form-label"></label>
+        <input asp-for="PublicationYear" class="form-control" />
+        <span asp-validation-for="PublicationYear" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="PageCount" class="form-label"></label>
+        <input asp-for="PageCount" class="form-control" />
+        <span asp-validation-for="PageCount" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Isbn" class="form-label"></label>
+        <input asp-for="Isbn" class="form-control" placeholder="978-5-17-090630-7" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Publisher" class="form-label"></label>
+        <input asp-for="Publisher" class="form-control" />
+        <span asp-validation-for="Publisher" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Genre" class="form-label"></label>
+        <input asp-for="Genre" class="form-control" />
+        <span asp-validation-for="Genre" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="TableOfContentsHtml" class="form-label"></label>
+        <textarea asp-for="TableOfContentsHtml" class="form-control toc-editor" rows="15"></textarea>
+        <span asp-validation-for="TableOfContentsHtml" class="text-danger"></span>
+        <div class="form-text">
+            Use headings and nested lists for parts and chapters. The table of contents is stored as XML:
+            only headings, paragraphs, lists and basic text formatting are kept; other markup is removed on save.
+        </div>
+    </div>
+</div>

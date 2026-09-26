@@ -1,0 +1,12 @@
+@page "/status/{code:int}"
+@model StatusCodeModel
+@{
+    var isNotFound = Model.Code == StatusCodes.Status404NotFound;
+    ViewData["Title"] = isNotFound ? "Not found" : "Error";
+}
+
+<h1 class="h3">@(isNotFound ? "Not found" : $"Error {Model.Code}")</h1>
+<p>
+    @(isNotFound ? "The book or page you are looking for does not exist. It may have been deleted." : "The request could not be processed.")
+</p>
+<a class="btn btn-primary" asp-page="/Index">Back to the list</a>

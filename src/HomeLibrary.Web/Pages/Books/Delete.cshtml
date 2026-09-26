@@ -1,0 +1,25 @@
+@page "/books/{id:long}/delete"
+@model DeleteModel
+@{
+    var book = Model.Book;
+    ViewData["Title"] = "Delete book";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Index">Books</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Books/Details" asp-route-id="@book.Id">@book.Title</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Delete</li>
+    </ol>
+</nav>
+
+<h1 class="h3 mb-3">Delete book</h1>
+
+<div class="alert alert-danger">
+    Delete <strong>@book.Title</strong> by @book.Author? This cannot be undone.
+</div>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-outline-secondary" asp-page="/Books/Details" asp-route-id="@book.Id">Cancel</a>
+</form>

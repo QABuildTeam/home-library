@@ -1,0 +1,12 @@
+@using HomeLibrary.Web.Models
+@{
+    var message = TempData[TempDataKeys.STATUS_MESSAGE] as string;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="status">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
