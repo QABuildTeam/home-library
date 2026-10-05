@@ -7,16 +7,15 @@
   <ItemGroup>
     <PackageReference Include="AngleSharp" />
     <PackageReference Include="Dapper" />
-    <PackageReference Include="dbup-postgresql" />
+    <PackageReference Include="FluentMigrator" />
+    <PackageReference Include="FluentMigrator.Runner.Core" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" />
     <PackageReference Include="HtmlSanitizer" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Npgsql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Persistence\Migrations\Scripts\*.sql" />
   </ItemGroup>
 
 </Project>

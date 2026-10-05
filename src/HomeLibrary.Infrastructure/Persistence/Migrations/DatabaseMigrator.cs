@@ -1,4 +1,5 @@
-using DbUp;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
@@ -6,41 +7,76 @@ using Npgsql;
 namespace HomeLibrary.Infrastructure.Persistence.Migrations;
 
 /// <summary>
-/// Applies the embedded SQL scripts with DbUp. Applied scripts are recorded in the <c>schema_versions</c> journal table
-/// of the library schema, so every script runs exactly once.
+/// Applies the FluentMigrator migrations of this assembly. Applied migrations are recorded in the <c>version_info</c>
+/// table of the library schema, so every migration runs exactly once. A journal left by the former DbUp migrations
+/// is imported into that table first.
 /// </summary>
-internal sealed class DatabaseMigrator(IOptions<DatabaseOptions> options, ILogger<DatabaseMigrator> logger) : IDatabaseMigrator
+internal sealed class DatabaseMigrator(
+    IOptions<DatabaseOptions> options,
+    ILoggerFactory loggerFactory,
+    ILogger<DatabaseMigrator> logger) : IDatabaseMigrator
 {
-    private const string SCHEMA_VARIABLE = "schema";
-    private const string JOURNAL_TABLE = "schema_versions";
-    private const string SCRIPTS_PREFIX = "HomeLibrary.Infrastructure.Persistence.Migrations.Scripts.";
-
     public async Task Migrate(CancellationToken cancellationToken)
     {
         var settings = options.Value;
 
+        await using var services = MigrationServices.Create(settings, loggerFactory);
+
         await CreateSchema(settings, cancellationToken);
 
-        var upgrader = DeployChanges.To
-            .PostgresqlDatabase(settings.ConnectionString, settings.Schema)
-            .WithScriptsEmbeddedInAssembly(typeof(DatabaseMigrator).Assembly, IsMigrationScript)
-            .WithVariable(SCHEMA_VARIABLE, settings.Schema)
-            .JournalToPostgresqlTable(settings.Schema, JOURNAL_TABLE)
-            .WithTransactionPerScript()
-            .LogTo(new DbUpLogger(logger))
-            .Build();
-
-        var result = upgrader.PerformUpgrade();
-
-        if (!result.Successful)
+        // Loading the version information creates the version table when it does not exist yet.
+        using (var scope = services.CreateScope())
         {
-            throw new InvalidOperationException($"Database migration failed on script '{result.ErrorScript?.Name}'.", result.Error);
+            scope.ServiceProvider.GetRequiredService<IMigrationRunner>().LoadVersionInfoIfRequired();
+        }
+
+        var imported = await DbUpJournalImporter.Import(settings.ConnectionString, settings.Schema, cancellationToken);
+
+        if (imported > 0)
+        {
+            logger.LogInformation("Imported {Count} migrations from the DbUp journal of schema '{Schema}'", imported, settings.Schema);
+        }
+
+        // A new scope reads the version table again, including the imported migrations.
+        using (var scope = services.CreateScope())
+        {
+            ApplyPendingMigrations(scope.ServiceProvider, settings.Schema);
         }
 
         logger.LogInformation("Database schema '{Schema}' is up to date", settings.Schema);
     }
 
-    private static bool IsMigrationScript(string resourceName) => resourceName.StartsWith(SCRIPTS_PREFIX, StringComparison.Ordinal);
+    private void ApplyPendingMigrations(IServiceProvider services, string schema)
+    {
+        var runner = services.GetRequiredService<IMigrationRunner>();
+        var versionLoader = services.GetRequiredService<IVersionLoader>();
+
+        runner.LoadVersionInfoIfRequired();
+
+        // FluentMigrator logs at the Information level, and appsettings.json filters its messages out below Warning,
+        // so the migrations about to be applied are listed here.
+        var pending = runner.MigrationLoader
+            .LoadMigrations()
+            .Where(migration => !versionLoader.VersionInfo.HasAppliedMigration(migration.Key))
+            .Select(migration => $"{migration.Key} {migration.Value.Migration.GetType().Name}")
+            .ToList();
+
+        if (pending.Count == 0)
+        {
+            return;
+        }
+
+        logger.LogInformation("Applying migrations to schema '{Schema}': {Migrations}", schema, string.Join(", ", pending));
+
+        try
+        {
+            runner.MigrateUp();
+        }
+        catch (Exception exception)
+        {
+            throw new InvalidOperationException($"Database migration of schema '{schema}' failed.", exception);
+        }
+    }
 
     private static async Task CreateSchema(DatabaseOptions settings, CancellationToken cancellationToken)
     {
