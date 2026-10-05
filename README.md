@@ -130,4 +130,6 @@ dotnet test
 | HtmlSanitizer, AngleSharp | MIT | Очистка HTML и преобразование его в XHTML |
 | TinyMCE 7.9.3 | GPL v2+ | HTML-редактор оглавления; локальная копия в `wwwroot/lib/tinymce` |
 | Bootstrap 5.3.3 (включает Popper 2) | MIT | Оформление интерфейса; локальная копия в `wwwroot/lib/bootstrap` — только `bootstrap.min.css`, `bootstrap.bundle.min.js` и их карты исходников |
-| jQuery, jQuery Validation | MIT | Проверки на клиенте |
+| jQuery 3.7.1, jQuery Validation 1.21.0, jQuery Validation Unobtrusive 4.0.0 | MIT | Проверки на клиенте, подключаются только на страницах добавления и редактирования книги; локальные копии в `wwwroot/lib` — только минифицированные файлы |
+
+Файлы в `wwwroot/lib` побайтово совпадают с опубликованными npm-пакетами указанных версий: `.gitattributes` отключает для этой папки преобразование переводов строк.

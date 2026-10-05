@@ -1,0 +1,3 @@
+# Third-party front-end libraries are stored byte-for-byte as published (no line ending conversion),
+# so they stay identical to the original packages on every checkout.
+src/HomeLibrary.Web/wwwroot/lib/** -text

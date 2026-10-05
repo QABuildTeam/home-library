@@ -8,6 +8,15 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
+# Third-party libraries must stay byte-for-byte identical to the published packages (see .gitattributes).
+[src/HomeLibrary.Web/wwwroot/lib/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = unset
+
 [*.{json,yml,yaml,props,csproj,slnx,xml}]
 indent_size = 2
 
