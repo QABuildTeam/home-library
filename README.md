@@ -40,13 +40,29 @@ tests/
 
 Зависимости направлены только внутрь: Web → Application → Domain, Infrastructure → Application. Web ссылается на Infrastructure только как точка сборки зависимостей: в `Program.cs` регистрирует сервисы и запускает миграции.
 
-- Интерфейсы для внешнего мира объявлены в Application:
+Application разложен по функциям: всё, что относится к книгам, лежит в `Books/`, а внутри — по роли:
+
+```
+HomeLibrary.Application/
+  Abstractions/              ICommandHandler, IQueryHandler
+  Common/                    PagedResult
+  Books/
+    Models/                  BookInput, BookView, BookListItem, BookSearchCriteria, BookSearchScope, TableOfContentsFile
+    Ports/                   интерфейсы, которые реализует Infrastructure
+    Services/                IBookDetailsFactory, BookDetailsFactory
+    Exceptions/              BookNotFoundException, BookConcurrencyException, TableOfContentsNotFoundException
+    UseCases/                по папке на сценарий: команда или запрос и его обработчик
+      CreateBook/  UpdateBook/  DeleteBook/  GetBook/  SearchBooks/  ExportTableOfContents/
+```
+
+- Интерфейсы для внешнего мира (`Books/Ports`):
   - `IBookReadRepository` — чтение книг;
   - `IBookWriteRepository` — изменение книг;
   - `ITableOfContentsConverter` — преобразование оглавления HTML ↔ XML;
   - `ITableOfContentsFileBuilder` — построение файла выгрузки.
 - Реализации этих интерфейсов находятся в Infrastructure.
 - Каждый сценарий — отдельный обработчик: `CreateBookHandler`, `UpdateBookHandler`, `DeleteBookHandler`, `GetBookHandler`, `SearchBooksHandler`, `ExportTableOfContentsHandler`.
+- Тесты Application повторяют эту структуру (`tests/HomeLibrary.Application.Tests/Books/...`).
 
 ## База данных
 

@@ -1,4 +1,4 @@
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
 
 namespace HomeLibrary.Infrastructure.Persistence.Books;
 

@@ -1,7 +1,7 @@
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Books.Commands;
-using HomeLibrary.Application.Books.Queries;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.UseCases.DeleteBook;
+using HomeLibrary.Application.Books.UseCases.GetBook;
 using HomeLibrary.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

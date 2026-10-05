@@ -2,7 +2,8 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Domain.Books;
 
 namespace HomeLibrary.Infrastructure.Export;

@@ -1,4 +1,5 @@
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Application.Common;
 using Microsoft.Extensions.DependencyInjection;
 

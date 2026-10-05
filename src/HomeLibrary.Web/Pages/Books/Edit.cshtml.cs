@@ -1,8 +1,8 @@
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Books.Commands;
-using HomeLibrary.Application.Books.Queries;
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.UseCases.GetBook;
+using HomeLibrary.Application.Books.UseCases.UpdateBook;
 using HomeLibrary.Domain.Exceptions;
 using HomeLibrary.Web.Extensions;
 using HomeLibrary.Web.Models;

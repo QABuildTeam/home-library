@@ -1,5 +1,5 @@
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Domain.Books;
 using Microsoft.Extensions.DependencyInjection;
 

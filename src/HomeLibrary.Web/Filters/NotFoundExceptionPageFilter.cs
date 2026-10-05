@@ -1,4 +1,4 @@
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

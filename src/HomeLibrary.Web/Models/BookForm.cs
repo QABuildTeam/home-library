@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
 using HomeLibrary.Domain.Books;
 
 namespace HomeLibrary.Web.Models;
