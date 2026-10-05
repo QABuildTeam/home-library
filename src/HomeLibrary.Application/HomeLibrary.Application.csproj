@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="HomeLibrary.Application.Tests" />
     <!-- NSubstitute (Castle DynamicProxy) builds test doubles of internal interfaces in this dynamic assembly. -->
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>

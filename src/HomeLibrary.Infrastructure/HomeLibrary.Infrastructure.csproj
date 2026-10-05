@@ -19,8 +19,4 @@
     <EmbeddedResource Include="Persistence\Migrations\Scripts\*.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <InternalsVisibleTo Include="HomeLibrary.Infrastructure.Tests" />
-  </ItemGroup>
-
 </Project>
