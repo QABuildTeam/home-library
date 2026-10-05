@@ -8,7 +8,7 @@ namespace HomeLibrary.Application.Books.UseCases.SearchBooks;
 /// <summary>
 /// Normalizes the search parameters and finds books page by page.
 /// </summary>
-public sealed class SearchBooksHandler(IBookReadRepository repository) : IQueryHandler<SearchBooksQuery, PagedResult<BookListItem>>
+internal sealed class SearchBooksHandler(IBookReadRepository repository) : IQueryHandler<SearchBooksQuery, PagedResult<BookListItem>>
 {
     public const int MAX_PAGE_SIZE = 100;
 

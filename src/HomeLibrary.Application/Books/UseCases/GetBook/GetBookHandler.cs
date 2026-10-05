@@ -9,7 +9,7 @@ namespace HomeLibrary.Application.Books.UseCases.GetBook;
 /// <summary>
 /// Gets the full description of a book with the table of contents converted to HTML.
 /// </summary>
-public sealed class GetBookHandler(
+internal sealed class GetBookHandler(
     IBookReadRepository repository,
     ITableOfContentsConverter tableOfContentsConverter) : IQueryHandler<GetBookQuery, BookView>
 {

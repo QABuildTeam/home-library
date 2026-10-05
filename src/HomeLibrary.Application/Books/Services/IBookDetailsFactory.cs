@@ -6,7 +6,7 @@ namespace HomeLibrary.Application.Books.Services;
 /// <summary>
 /// Builds normalized book attributes from the user input.
 /// </summary>
-public interface IBookDetailsFactory
+internal interface IBookDetailsFactory
 {
     /// <summary>
     /// Trims the text fields, turns empty optional fields into <c>null</c> and converts the table of contents to XML.

@@ -11,7 +11,7 @@ namespace HomeLibrary.Infrastructure.Persistence.Books;
 /// Reads books through the <c>book_get</c> and <c>book_search</c> stored functions.
 /// </summary>
 /// <param name="dataSource">Connection source; its search path points to the library schema.</param>
-public sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadRepository
+internal sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadRepository
 {
     // Column aliases match the row class properties, so Dapper needs no global naming convention.
     private const string GET_SQL = """

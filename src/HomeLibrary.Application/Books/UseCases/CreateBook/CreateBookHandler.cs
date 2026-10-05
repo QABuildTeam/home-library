@@ -8,7 +8,7 @@ namespace HomeLibrary.Application.Books.UseCases.CreateBook;
 /// <summary>
 /// Validates the input and adds a new book. Returns the identifier of the new book.
 /// </summary>
-public sealed class CreateBookHandler(
+internal sealed class CreateBookHandler(
     IBookDetailsFactory detailsFactory,
     IBookDetailsValidator validator,
     IBookWriteRepository repository) : ICommandHandler<CreateBookCommand, long>

@@ -7,7 +7,7 @@ namespace HomeLibrary.Web.Extensions;
 /// <summary>
 /// Shows domain validation errors next to the corresponding fields of the book form.
 /// </summary>
-public static class ModelStateDictionaryExtensions
+internal static class ModelStateDictionaryExtensions
 {
     private const string PROPERTY_SEPARATOR = ".";
 

@@ -9,7 +9,7 @@ namespace HomeLibrary.Infrastructure.Persistence.Migrations;
 /// Applies the embedded SQL scripts with DbUp. Applied scripts are recorded in the <c>schema_versions</c> journal table
 /// of the library schema, so every script runs exactly once.
 /// </summary>
-public sealed class DatabaseMigrator(IOptions<DatabaseOptions> options, ILogger<DatabaseMigrator> logger) : IDatabaseMigrator
+internal sealed class DatabaseMigrator(IOptions<DatabaseOptions> options, ILogger<DatabaseMigrator> logger) : IDatabaseMigrator
 {
     private const string SCHEMA_VARIABLE = "schema";
     private const string JOURNAL_TABLE = "schema_versions";

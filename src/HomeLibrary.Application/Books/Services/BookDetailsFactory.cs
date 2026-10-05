@@ -8,7 +8,7 @@ namespace HomeLibrary.Application.Books.Services;
 /// Builds normalized book attributes from the user input.
 /// </summary>
 /// <param name="tableOfContentsConverter">Converts the editor HTML to the stored XML.</param>
-public sealed class BookDetailsFactory(ITableOfContentsConverter tableOfContentsConverter) : IBookDetailsFactory
+internal sealed class BookDetailsFactory(ITableOfContentsConverter tableOfContentsConverter) : IBookDetailsFactory
 {
     public BookDetails Create(BookInput input)
     {

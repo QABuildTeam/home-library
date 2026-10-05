@@ -8,7 +8,7 @@ namespace HomeLibrary.Application.Books.UseCases.UpdateBook;
 /// <summary>
 /// Validates the input and saves the new attributes of an existing book.
 /// </summary>
-public sealed class UpdateBookHandler(
+internal sealed class UpdateBookHandler(
     IBookDetailsFactory detailsFactory,
     IBookDetailsValidator validator,
     IBookWriteRepository repository) : ICommandHandler<UpdateBookCommand>

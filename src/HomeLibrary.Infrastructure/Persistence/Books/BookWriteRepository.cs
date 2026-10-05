@@ -10,7 +10,7 @@ namespace HomeLibrary.Infrastructure.Persistence.Books;
 /// Changes books through the <c>book_insert</c>, <c>book_update</c> and <c>book_delete</c> stored procedures.
 /// </summary>
 /// <param name="dataSource">Connection source; its search path points to the library schema.</param>
-public sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWriteRepository
+internal sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWriteRepository
 {
     private const string INSERT_SQL = """
         CALL book_insert(@Title, @Author, @PublicationYear, @Isbn, @Publisher, @PageCount, @Genre, @Notes,

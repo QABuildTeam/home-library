@@ -6,7 +6,7 @@ namespace HomeLibrary.Application.Books.UseCases.DeleteBook;
 /// <summary>
 /// Deletes a book from the library.
 /// </summary>
-public sealed class DeleteBookHandler(IBookWriteRepository repository) : ICommandHandler<DeleteBookCommand>
+internal sealed class DeleteBookHandler(IBookWriteRepository repository) : ICommandHandler<DeleteBookCommand>
 {
     public Task Handle(DeleteBookCommand command, CancellationToken cancellationToken)
     {

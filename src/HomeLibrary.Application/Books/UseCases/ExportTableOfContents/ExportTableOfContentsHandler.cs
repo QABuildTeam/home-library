@@ -8,7 +8,7 @@ namespace HomeLibrary.Application.Books.UseCases.ExportTableOfContents;
 /// <summary>
 /// Exports the table of contents of a book to a file.
 /// </summary>
-public sealed class ExportTableOfContentsHandler(IBookReadRepository repository, ITableOfContentsFileBuilder fileBuilder)
+internal sealed class ExportTableOfContentsHandler(IBookReadRepository repository, ITableOfContentsFileBuilder fileBuilder)
     : IQueryHandler<ExportTableOfContentsQuery, TableOfContentsFile>
 {
     public async Task<TableOfContentsFile> Handle(ExportTableOfContentsQuery query, CancellationToken cancellationToken)

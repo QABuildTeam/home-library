@@ -15,7 +15,7 @@ namespace HomeLibrary.Infrastructure.Html;
 /// and keep their text, like the editor does; executable and embedded content is removed completely.
 /// Whitespace is preserved, because text between inline elements is meaningful.
 /// </summary>
-public sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
+internal sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
 {
     private static readonly string[] _allowedTags =
     [
