@@ -48,6 +48,20 @@ public sealed class GetBookHandlerTests
     }
 
     [Fact]
+    public async Task Handle_BookWithoutTableOfContents_ReturnsNullHtmlAndSkipsConverter()
+    {
+        var details = new BookDetails("Title", "Author", null, null, null, null, null, null, null);
+        var timestamp = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+        _repository.Get(BOOK_ID, Arg.Any<CancellationToken>()).Returns(new Book(BOOK_ID, details, VERSION, timestamp, timestamp));
+
+        var view = await new GetBookHandler(_repository, _converter).Handle(new GetBookQuery(BOOK_ID), CancellationToken.None);
+
+        Assert.Null(view.TableOfContentsHtml);
+        _converter.DidNotReceiveWithAnyArgs().ToHtml(default!);
+    }
+
+    [Fact]
     public async Task Handle_MissingBook_ThrowsNotFound()
     {
         _repository.Get(BOOK_ID, Arg.Any<CancellationToken>()).Returns((Book?)null);

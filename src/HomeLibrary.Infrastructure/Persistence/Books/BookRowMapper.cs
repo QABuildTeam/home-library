@@ -16,17 +16,22 @@ internal static class BookRowMapper
         ArgumentNullException.ThrowIfNull(row);
 
         var details = new BookDetails(
-            row.Title,
-            row.Author,
-            row.PublicationYear,
-            row.Isbn,
-            row.Publisher,
-            row.PageCount,
-            row.Genre,
-            row.Notes,
-            row.Toc is null ? null : new TableOfContents(row.Toc));
+            Title: row.Title,
+            Author: row.Author,
+            PublicationYear: row.PublicationYear,
+            Isbn: row.Isbn,
+            Publisher: row.Publisher,
+            PageCount: row.PageCount,
+            Genre: row.Genre,
+            Notes: row.Notes,
+            TableOfContents: row.Toc is null ? null : new TableOfContents(row.Toc));
 
-        return new Book(row.Id, details, row.Version, ToUtcOffset(row.CreatedAt), ToUtcOffset(row.UpdatedAt));
+        return new Book(
+            id: row.Id,
+            details: details,
+            version: row.Version,
+            createdAt: ToUtcOffset(row.CreatedAt),
+            updatedAt: ToUtcOffset(row.UpdatedAt));
     }
 
     /// <summary>
@@ -36,7 +41,12 @@ internal static class BookRowMapper
     {
         ArgumentNullException.ThrowIfNull(row);
 
-        return new BookListItem(row.Id, row.Title, row.Author, row.PublicationYear, row.Genre);
+        return new BookListItem(
+            Id: row.Id,
+            Title: row.Title,
+            Author: row.Author,
+            PublicationYear: row.PublicationYear,
+            Genre: row.Genre);
     }
 
     // timestamptz values are UTC. new DateTimeOffset(DateTime) would apply the local offset to a value with

@@ -1,8 +1,8 @@
 using HomeLibrary.Application.Abstractions;
 using HomeLibrary.Application.Books.Exceptions;
+using HomeLibrary.Application.Books.Mappers;
 using HomeLibrary.Application.Books.Models;
 using HomeLibrary.Application.Books.Ports;
-using HomeLibrary.Domain.Books;
 
 namespace HomeLibrary.Application.Books.UseCases.GetBook;
 
@@ -19,26 +19,9 @@ internal sealed class GetBookHandler(
 
         var book = await repository.Get(query.Id, cancellationToken) ?? throw new BookNotFoundException(query.Id);
 
-        return ToView(book);
-    }
+        var tableOfContents = book.Details.TableOfContents;
+        var tableOfContentsHtml = tableOfContents is null ? null : tableOfContentsConverter.ToHtml(tableOfContents);
 
-    private BookView ToView(Book book)
-    {
-        var details = book.Details;
-
-        return new BookView(
-            Id: book.Id,
-            Title: details.Title,
-            Author: details.Author,
-            PublicationYear: details.PublicationYear,
-            Isbn: details.Isbn,
-            Publisher: details.Publisher,
-            PageCount: details.PageCount,
-            Genre: details.Genre,
-            Notes: details.Notes,
-            TableOfContentsHtml: details.TableOfContents is null ? null : tableOfContentsConverter.ToHtml(details.TableOfContents),
-            Version: book.Version,
-            CreatedAt: book.CreatedAt,
-            UpdatedAt: book.UpdatedAt);
+        return BookViewMapper.ToView(book, tableOfContentsHtml);
     }
 }

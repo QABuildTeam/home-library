@@ -1,5 +1,5 @@
 using HomeLibrary.Domain.Exceptions;
-using HomeLibrary.Web.Models;
+using HomeLibrary.Web.Mappers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HomeLibrary.Web.Extensions;
@@ -18,7 +18,7 @@ internal static class ModelStateDictionaryExtensions
 
         foreach (var (field, error) in exception.Errors)
         {
-            modelState.AddModelError(formPrefix + PROPERTY_SEPARATOR + BookForm.ToFormField(field), error);
+            modelState.AddModelError(formPrefix + PROPERTY_SEPARATOR + BookFormMapper.ToFormField(field), error);
         }
     }
 }

@@ -50,6 +50,7 @@ HomeLibrary.Application/
     Models/                  BookInput, BookView, BookListItem, BookSearchCriteria, BookSearchScope, TableOfContentsFile
     Ports/                   интерфейсы, которые реализует Infrastructure
     Services/                IBookDetailsFactory, BookDetailsFactory
+    Mappers/                 BookViewMapper (Book → BookView)
     Exceptions/              BookNotFoundException, BookConcurrencyException, TableOfContentsNotFoundException
     UseCases/                по папке на сценарий: команда или запрос и его обработчик
       CreateBook/  UpdateBook/  DeleteBook/  GetBook/  SearchBooks/  ExportTableOfContents/
