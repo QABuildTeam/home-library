@@ -129,4 +129,5 @@ dotnet test
 | DbUp | MIT | Миграции БД |
 | HtmlSanitizer, AngleSharp | MIT | Очистка HTML и преобразование его в XHTML |
 | TinyMCE 7.9.3 | GPL v2+ | HTML-редактор оглавления; локальная копия в `wwwroot/lib/tinymce` |
-| Bootstrap, jQuery Validation | MIT | Оформление интерфейса и проверки на клиенте |
+| Bootstrap 5.3.3 (включает Popper 2) | MIT | Оформление интерфейса; локальная копия в `wwwroot/lib/bootstrap` — только `bootstrap.min.css`, `bootstrap.bundle.min.js` и их карты исходников |
+| jQuery, jQuery Validation | MIT | Проверки на клиенте |
