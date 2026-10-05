@@ -1,5 +1,3 @@
-using HomeLibrary.Application.Books.Models;
-
 namespace HomeLibrary.Infrastructure.Persistence.Books;
 
 /// <summary>
@@ -21,6 +19,4 @@ internal sealed class BookListRow
     /// Number of matching books on all pages.
     /// </summary>
     public long TotalCount { get; init; }
-
-    public BookListItem ToListItem() => new(Id, Title, Author, PublicationYear, Genre);
 }

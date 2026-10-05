@@ -48,7 +48,7 @@ internal sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookRea
         var command = new CommandDefinition(GET_SQL, new { Id = id }, cancellationToken: cancellationToken);
         var row = await connection.QuerySingleOrDefaultAsync<BookRow>(command);
 
-        return row?.ToBook();
+        return row is null ? null : BookRowMapper.ToBook(row);
     }
 
     public async Task<PagedResult<BookListItem>> Search(BookSearchCriteria criteria, CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ internal sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookRea
 
         var totalCount = rows.Count > 0 ? (int)rows[0].TotalCount : 0;
         var items = rows
-            .Select(row => row.ToListItem())
+            .Select(BookRowMapper.ToListItem)
             .ToList();
 
         return new PagedResult<BookListItem>(items, totalCount, criteria.Page, criteria.PageSize);
