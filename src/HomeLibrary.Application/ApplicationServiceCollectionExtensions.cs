@@ -1,7 +1,12 @@
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Books.Commands;
-using HomeLibrary.Application.Books.Queries;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Services;
+using HomeLibrary.Application.Books.UseCases.CreateBook;
+using HomeLibrary.Application.Books.UseCases.DeleteBook;
+using HomeLibrary.Application.Books.UseCases.ExportTableOfContents;
+using HomeLibrary.Application.Books.UseCases.GetBook;
+using HomeLibrary.Application.Books.UseCases.SearchBooks;
+using HomeLibrary.Application.Books.UseCases.UpdateBook;
 using HomeLibrary.Application.Common;
 using HomeLibrary.Domain.Books;
 using Microsoft.Extensions.DependencyInjection;

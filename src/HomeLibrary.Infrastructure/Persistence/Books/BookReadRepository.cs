@@ -1,5 +1,6 @@
 using Dapper;
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Application.Common;
 using HomeLibrary.Domain.Books;
 using Npgsql;
@@ -10,7 +11,7 @@ namespace HomeLibrary.Infrastructure.Persistence.Books;
 /// Reads books through the <c>book_get</c> and <c>book_search</c> stored functions.
 /// </summary>
 /// <param name="dataSource">Connection source; its search path points to the library schema.</param>
-public sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadRepository
+internal sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadRepository
 {
     // Column aliases match the row class properties, so Dapper needs no global naming convention.
     private const string GET_SQL = """
@@ -47,7 +48,7 @@ public sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadR
         var command = new CommandDefinition(GET_SQL, new { Id = id }, cancellationToken: cancellationToken);
         var row = await connection.QuerySingleOrDefaultAsync<BookRow>(command);
 
-        return row?.ToBook();
+        return row is null ? null : BookRowMapper.ToBook(row);
     }
 
     public async Task<PagedResult<BookListItem>> Search(BookSearchCriteria criteria, CancellationToken cancellationToken)
@@ -71,7 +72,7 @@ public sealed class BookReadRepository(NpgsqlDataSource dataSource) : IBookReadR
 
         var totalCount = rows.Count > 0 ? (int)rows[0].TotalCount : 0;
         var items = rows
-            .Select(row => row.ToListItem())
+            .Select(BookRowMapper.ToListItem)
             .ToList();
 
         return new PagedResult<BookListItem>(items, totalCount, criteria.Page, criteria.PageSize);

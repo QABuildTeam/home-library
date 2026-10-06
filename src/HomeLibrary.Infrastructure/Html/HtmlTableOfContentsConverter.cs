@@ -2,7 +2,7 @@ using System.Xml;
 using System.Xml.Linq;
 using AngleSharp.Xhtml;
 using Ganss.Xss;
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Domain.Books;
 using HomeLibrary.Domain.Exceptions;
 
@@ -15,31 +15,8 @@ namespace HomeLibrary.Infrastructure.Html;
 /// and keep their text, like the editor does; executable and embedded content is removed completely.
 /// Whitespace is preserved, because text between inline elements is meaningful.
 /// </summary>
-public sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
+internal sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
 {
-    private static readonly string[] _allowedTags =
-    [
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
-        "ul",
-        "ol",
-        "li",
-        "strong",
-        "b",
-        "em",
-        "i",
-        "u",
-        "s",
-        "br",
-        "div",
-        "span"
-    ];
-
     private static readonly HashSet<string> _elementsRemovedWithContent = new(
         [
             "script",
@@ -104,7 +81,13 @@ public sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
     {
         var options = new HtmlSanitizerOptions
         {
-            AllowedTags = new HashSet<string>(_allowedTags, StringComparer.OrdinalIgnoreCase),
+            AllowedTags = new HashSet<string>(
+                [
+                    .. TableOfContentsMarkup.BlockElements,
+                    .. TableOfContentsMarkup.InlineElements,
+                    TableOfContentsMarkup.LINE_BREAK
+                ],
+                StringComparer.OrdinalIgnoreCase),
             AllowedAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             AllowedCssProperties = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             AllowedSchemes = new HashSet<string>(StringComparer.OrdinalIgnoreCase),

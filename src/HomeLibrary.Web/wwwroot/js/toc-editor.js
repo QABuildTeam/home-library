@@ -1,5 +1,5 @@
 // HTML editor of the table of contents (TinyMCE, self-hosted under the GPL license).
-// The allowed elements match the server-side sanitizer (HtmlTableOfContentsConverter),
+// The allowed elements match the server-side list (TableOfContentsMarkup, used by the sanitizer and the search text),
 // so what the user sees in the editor is what gets stored.
 (function () {
     'use strict';

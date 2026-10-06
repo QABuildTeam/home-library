@@ -1,7 +1,8 @@
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books.Commands;
+using HomeLibrary.Application.Books.UseCases.CreateBook;
 using HomeLibrary.Domain.Exceptions;
 using HomeLibrary.Web.Extensions;
+using HomeLibrary.Web.Mappers;
 using HomeLibrary.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,7 +32,7 @@ public sealed class CreateModel(ICommandHandler<CreateBookCommand, long> createH
 
         try
         {
-            var id = await createHandler.Handle(new CreateBookCommand(Input.ToInput()), cancellationToken);
+            var id = await createHandler.Handle(new CreateBookCommand(BookFormMapper.ToInput(Input)), cancellationToken);
 
             TempData[TempDataKeys.STATUS_MESSAGE] = CREATED_MESSAGE;
 

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using HomeLibrary.Application.Books;
 using HomeLibrary.Domain.Books;
 
 namespace HomeLibrary.Web.Models;
@@ -47,30 +46,4 @@ public sealed class BookForm
 
     [Display(Name = "Table of contents")]
     public string? TableOfContentsHtml { get; set; }
-
-    public static BookForm FromView(BookView view)
-    {
-        ArgumentNullException.ThrowIfNull(view);
-
-        return new BookForm
-        {
-            Title = view.Title,
-            Author = view.Author,
-            PublicationYear = view.PublicationYear,
-            Isbn = view.Isbn,
-            Publisher = view.Publisher,
-            PageCount = view.PageCount,
-            Genre = view.Genre,
-            Notes = view.Notes,
-            TableOfContentsHtml = view.TableOfContentsHtml
-        };
-    }
-
-    /// <summary>
-    /// Maps a domain field name from a validation error to the name of the form property that shows it.
-    /// </summary>
-    public static string ToFormField(string domainField) =>
-        domainField == nameof(BookDetails.TableOfContents) ? nameof(TableOfContentsHtml) : domainField;
-
-    public BookInput ToInput() => new(Title, Author, PublicationYear, Isbn, Publisher, PageCount, Genre, Notes, TableOfContentsHtml);
 }

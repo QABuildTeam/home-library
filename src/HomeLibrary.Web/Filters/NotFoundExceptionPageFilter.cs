@@ -1,4 +1,4 @@
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -8,7 +8,7 @@ namespace HomeLibrary.Web.Filters;
 /// Turns "not found" exceptions thrown by page handlers into the 404 response,
 /// so pages do not need to repeat the same try/catch block.
 /// </summary>
-public sealed class NotFoundExceptionPageFilter : IAsyncPageFilter
+internal sealed class NotFoundExceptionPageFilter : IAsyncPageFilter
 {
     public Task OnPageHandlerSelectionAsync(PageHandlerSelectedContext context) => Task.CompletedTask;
 

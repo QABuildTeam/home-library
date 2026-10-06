@@ -1,5 +1,3 @@
-using HomeLibrary.Domain.Books;
-
 namespace HomeLibrary.Infrastructure.Persistence.Books;
 
 /// <summary>
@@ -32,22 +30,4 @@ internal sealed class BookRow
     public DateTime UpdatedAt { get; init; }
 
     public int Version { get; init; }
-
-    public Book ToBook()
-    {
-        var details = new BookDetails(
-            Title,
-            Author,
-            PublicationYear,
-            Isbn,
-            Publisher,
-            PageCount,
-            Genre,
-            Notes,
-            Toc is null ? null : new TableOfContents(Toc));
-
-        return new Book(Id, details, Version, ToUtcOffset(CreatedAt), ToUtcOffset(UpdatedAt));
-    }
-
-    private static DateTimeOffset ToUtcOffset(DateTime value) => new(DateTime.SpecifyKind(value, DateTimeKind.Utc));
 }

@@ -12,4 +12,12 @@
     <UserSecretsId>home-library-6f1d2c44-5d0e-4a38-9c61-2b7f0e5a9c11</UserSecretsId>
   </PropertyGroup>
 
+  <!--
+    Every non-test project exposes its internal types to its own test project (HomeLibrary.X -> HomeLibrary.X.Tests).
+    DynamicProxyGenAssembly2 (NSubstitute) is declared per project on purpose: only Application needs it.
+  -->
+  <ItemGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+    <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
+  </ItemGroup>
+
 </Project>

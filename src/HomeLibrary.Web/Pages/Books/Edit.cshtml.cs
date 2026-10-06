@@ -1,10 +1,11 @@
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Books.Commands;
-using HomeLibrary.Application.Books.Queries;
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.UseCases.GetBook;
+using HomeLibrary.Application.Books.UseCases.UpdateBook;
 using HomeLibrary.Domain.Exceptions;
 using HomeLibrary.Web.Extensions;
+using HomeLibrary.Web.Mappers;
 using HomeLibrary.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,7 +39,7 @@ public sealed class EditModel(
         var book = await getBookHandler.Handle(new GetBookQuery(id), cancellationToken);
 
         Id = id;
-        Input = BookForm.FromView(book);
+        Input = BookFormMapper.FromView(book);
         Version = book.Version;
     }
 
@@ -53,7 +54,7 @@ public sealed class EditModel(
 
         try
         {
-            await updateHandler.Handle(new UpdateBookCommand(id, Version, Input.ToInput()), cancellationToken);
+            await updateHandler.Handle(new UpdateBookCommand(id, Version, BookFormMapper.ToInput(Input)), cancellationToken);
 
             TempData[TempDataKeys.STATUS_MESSAGE] = SAVED_MESSAGE;
 

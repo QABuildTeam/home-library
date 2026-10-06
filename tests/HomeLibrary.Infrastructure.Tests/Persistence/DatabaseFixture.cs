@@ -1,6 +1,5 @@
 using HomeLibrary.Infrastructure.Persistence;
 using HomeLibrary.Infrastructure.Persistence.Migrations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -16,9 +15,8 @@ namespace HomeLibrary.Infrastructure.Tests.Persistence;
 public sealed class DatabaseFixture : IAsyncLifetime
 {
     private const string SCHEMA_PREFIX = "library_test_";
-    private const string SCHEMA_FORMAT = "N";
 
-    private readonly string _schema = SCHEMA_PREFIX + Guid.NewGuid().ToString(SCHEMA_FORMAT);
+    private readonly string _schema = TestConfiguration.NewSchemaName(SCHEMA_PREFIX);
 
     private ServiceProvider? _services;
 
@@ -26,14 +24,7 @@ public sealed class DatabaseFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var configuration = new ConfigurationBuilder()
-            .AddUserSecrets<DatabaseFixture>()
-            .AddEnvironmentVariables()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                [$"{DatabaseOptions.SECTION_NAME}:{nameof(DatabaseOptions.Schema)}"] = _schema
-            })
-            .Build();
+        var configuration = TestConfiguration.Build(_schema);
 
         var services = new ServiceCollection();
 

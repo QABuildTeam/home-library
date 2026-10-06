@@ -2,7 +2,8 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Domain.Books;
 
 namespace HomeLibrary.Infrastructure.Export;
@@ -11,7 +12,7 @@ namespace HomeLibrary.Infrastructure.Export;
 /// Builds a UTF-8 XML file with the table of contents exactly as stored. The root element gets the book identifier, title and author
 /// as attributes, so the file describes itself.
 /// </summary>
-public sealed class XmlTableOfContentsFileBuilder : ITableOfContentsFileBuilder
+internal sealed class XmlTableOfContentsFileBuilder : ITableOfContentsFileBuilder
 {
     public const string CONTENT_TYPE = "application/xml";
 

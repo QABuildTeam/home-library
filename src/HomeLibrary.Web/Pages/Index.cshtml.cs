@@ -1,7 +1,7 @@
 using System.Globalization;
 using HomeLibrary.Application.Abstractions;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Books.Queries;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.UseCases.SearchBooks;
 using HomeLibrary.Application.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

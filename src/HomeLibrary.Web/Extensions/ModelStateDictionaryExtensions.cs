@@ -1,5 +1,5 @@
 using HomeLibrary.Domain.Exceptions;
-using HomeLibrary.Web.Models;
+using HomeLibrary.Web.Mappers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HomeLibrary.Web.Extensions;
@@ -7,7 +7,7 @@ namespace HomeLibrary.Web.Extensions;
 /// <summary>
 /// Shows domain validation errors next to the corresponding fields of the book form.
 /// </summary>
-public static class ModelStateDictionaryExtensions
+internal static class ModelStateDictionaryExtensions
 {
     private const string PROPERTY_SEPARATOR = ".";
 
@@ -18,7 +18,7 @@ public static class ModelStateDictionaryExtensions
 
         foreach (var (field, error) in exception.Errors)
         {
-            modelState.AddModelError(formPrefix + PROPERTY_SEPARATOR + BookForm.ToFormField(field), error);
+            modelState.AddModelError(formPrefix + PROPERTY_SEPARATOR + BookFormMapper.ToFormField(field), error);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace HomeLibrary.Infrastructure.Persistence;
 /// Validates the database settings at startup. The schema name is inserted into SQL text,
 /// so only simple lowercase identifiers are accepted.
 /// </summary>
-public sealed partial class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
+internal sealed partial class DatabaseOptionsValidator : IValidateOptions<DatabaseOptions>
 {
     private const string SCHEMA_NAME_PATTERN = "^[a-z_][a-z0-9_]{0,62}$";
 

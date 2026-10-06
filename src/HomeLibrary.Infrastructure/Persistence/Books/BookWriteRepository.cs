@@ -1,6 +1,6 @@
 using Dapper;
-using HomeLibrary.Application.Books;
-using HomeLibrary.Application.Exceptions;
+using HomeLibrary.Application.Books.Exceptions;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Domain.Books;
 using Npgsql;
 
@@ -10,16 +10,16 @@ namespace HomeLibrary.Infrastructure.Persistence.Books;
 /// Changes books through the <c>book_insert</c>, <c>book_update</c> and <c>book_delete</c> stored procedures.
 /// </summary>
 /// <param name="dataSource">Connection source; its search path points to the library schema.</param>
-public sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWriteRepository
+internal sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWriteRepository
 {
     private const string INSERT_SQL = """
         CALL book_insert(@Title, @Author, @PublicationYear, @Isbn, @Publisher, @PageCount, @Genre, @Notes,
-                         @TableOfContents::xml, NULL)
+                         @TableOfContents::xml, @TableOfContentsText, NULL)
         """;
 
     private const string UPDATE_SQL = """
         CALL book_update(@Id, @ExpectedVersion, @Title, @Author, @PublicationYear, @Isbn, @Publisher, @PageCount,
-                         @Genre, @Notes, @TableOfContents::xml)
+                         @Genre, @Notes, @TableOfContents::xml, @TableOfContentsText)
         """;
 
     private const string DELETE_SQL = "CALL book_delete(@Id)";
@@ -71,7 +71,10 @@ public sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWrit
         details.PageCount,
         details.Genre,
         details.Notes,
-        TableOfContents = details.TableOfContents?.Xml
+        TableOfContents = details.TableOfContents?.Xml,
+
+        // The application is the only source of the search text (see TableOfContentsSearchText).
+        TableOfContentsText = TableOfContentsSearchText.Extract(details.TableOfContents)
     };
 
     private static async Task ExecuteMappingErrors(NpgsqlConnection connection, CommandDefinition command, long bookId)

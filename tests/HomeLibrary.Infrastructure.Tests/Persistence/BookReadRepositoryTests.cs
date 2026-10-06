@@ -1,4 +1,5 @@
-using HomeLibrary.Application.Books;
+using HomeLibrary.Application.Books.Models;
+using HomeLibrary.Application.Books.Ports;
 using HomeLibrary.Application.Common;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,7 @@ public sealed class BookReadRepositoryTests(DatabaseFixture fixture) : IDisposab
     private const int SECOND_PAGE = 2;
     private const int SMALL_PAGE_SIZE = 2;
     private const int PAGED_BOOK_COUNT = 3;
+    private const int FIRST_VERSION = 1;
     private const string MARKER_FORMAT = "N";
 
     // Cyrillic text is the subject of the test: ILIKE must ignore the case of non-ASCII letters.
@@ -79,6 +81,40 @@ public sealed class BookReadRepositoryTests(DatabaseFixture fixture) : IDisposab
         var result = await Search($"chapter {marker}  begins", BookSearchScope.TableOfContents);
 
         Assert.Equal(id, Assert.Single(result.Items).Id);
+    }
+
+    [Fact]
+    public async Task Search_ByTableOfContents_FindsWordSplitByFormatting()
+    {
+        var marker = NewMarker();
+        var toc = $"<toc><p>Intro<em>duction{marker}</em></p></toc>";
+        var id = await Writer.Add(BookSamples.Create("Split", tableOfContentsXml: toc), CancellationToken.None);
+
+        var result = await Search($"introduction{marker}", BookSearchScope.TableOfContents);
+
+        Assert.Equal(id, Assert.Single(result.Items).Id);
+    }
+
+    [Fact]
+    public async Task Search_ByTableOfContents_AfterUpdate_FindsNewTextOnly()
+    {
+        var oldMarker = NewMarker();
+        var newMarker = NewMarker();
+        var id = await Writer.Add(
+            BookSamples.Create("Updated", tableOfContentsXml: $"<toc><p>{oldMarker}</p></toc>"),
+            CancellationToken.None);
+
+        await Writer.Update(
+            id,
+            FIRST_VERSION,
+            BookSamples.Create("Updated", tableOfContentsXml: $"<toc><p>Intro<em>duction{newMarker}</em></p></toc>"),
+            CancellationToken.None);
+
+        var newTextResult = await Search($"introduction{newMarker}", BookSearchScope.TableOfContents);
+        var oldTextResult = await Search(oldMarker, BookSearchScope.TableOfContents);
+
+        Assert.Equal(id, Assert.Single(newTextResult.Items).Id);
+        Assert.Empty(oldTextResult.Items);
     }
 
     [Fact]
