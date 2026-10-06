@@ -10,4 +10,5 @@ internal static class MigrationVersions
     public const long CREATE_BOOK_TABLE = 20260925232000;
     public const long CREATE_BOOK_ROUTINES = 20260925232100;
     public const long NORMALIZE_TOC_SEARCH_TEXT = 20260926113000;
+    public const long MOVE_TOC_SEARCH_TEXT_TO_APPLICATION = 20261006115821;
 }

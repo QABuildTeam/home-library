@@ -17,29 +17,6 @@ namespace HomeLibrary.Infrastructure.Html;
 /// </summary>
 internal sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
 {
-    private static readonly string[] _allowedTags =
-    [
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
-        "ul",
-        "ol",
-        "li",
-        "strong",
-        "b",
-        "em",
-        "i",
-        "u",
-        "s",
-        "br",
-        "div",
-        "span"
-    ];
-
     private static readonly HashSet<string> _elementsRemovedWithContent = new(
         [
             "script",
@@ -104,7 +81,13 @@ internal sealed class HtmlTableOfContentsConverter : ITableOfContentsConverter
     {
         var options = new HtmlSanitizerOptions
         {
-            AllowedTags = new HashSet<string>(_allowedTags, StringComparer.OrdinalIgnoreCase),
+            AllowedTags = new HashSet<string>(
+                [
+                    .. TableOfContentsMarkup.BlockElements,
+                    .. TableOfContentsMarkup.InlineElements,
+                    TableOfContentsMarkup.LINE_BREAK
+                ],
+                StringComparer.OrdinalIgnoreCase),
             AllowedAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             AllowedCssProperties = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             AllowedSchemes = new HashSet<string>(StringComparer.OrdinalIgnoreCase),

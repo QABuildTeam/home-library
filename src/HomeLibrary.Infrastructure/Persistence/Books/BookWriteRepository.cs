@@ -14,12 +14,12 @@ internal sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWr
 {
     private const string INSERT_SQL = """
         CALL book_insert(@Title, @Author, @PublicationYear, @Isbn, @Publisher, @PageCount, @Genre, @Notes,
-                         @TableOfContents::xml, NULL)
+                         @TableOfContents::xml, @TableOfContentsText, NULL)
         """;
 
     private const string UPDATE_SQL = """
         CALL book_update(@Id, @ExpectedVersion, @Title, @Author, @PublicationYear, @Isbn, @Publisher, @PageCount,
-                         @Genre, @Notes, @TableOfContents::xml)
+                         @Genre, @Notes, @TableOfContents::xml, @TableOfContentsText)
         """;
 
     private const string DELETE_SQL = "CALL book_delete(@Id)";
@@ -71,7 +71,10 @@ internal sealed class BookWriteRepository(NpgsqlDataSource dataSource) : IBookWr
         details.PageCount,
         details.Genre,
         details.Notes,
-        TableOfContents = details.TableOfContents?.Xml
+        TableOfContents = details.TableOfContents?.Xml,
+
+        // The application is the only source of the search text (see TableOfContentsSearchText).
+        TableOfContentsText = TableOfContentsSearchText.Extract(details.TableOfContents)
     };
 
     private static async Task ExecuteMappingErrors(NpgsqlConnection connection, CommandDefinition command, long bookId)
